@@ -8,15 +8,12 @@ int main(int argc, char *argv[])
 	int socketScan;
 	int connectScan;
 
-	int port;
-	int start = 0;
-	int end = 65535;
 	char * destiny;
 	destiny = argv[1];
 
 	struct sockaddr_in target;
 
-	for(port=start; port<end; port++){
+	for(int port=1; port<65535; port++){
 
 		socketScan = socket(AF_INET, SOCK_STREAM, 0);
 		target.sin_family = AF_INET;
@@ -36,4 +33,3 @@ int main(int argc, char *argv[])
 		}
  	}
 }
-
