@@ -3,20 +3,23 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+int valid_ip(const char argv[]);
+
 int main(int argc, char *argv[])
 {
+    if(valid_ip(argv[1]) == 1)
+    {
+        printf("incompatible IP\n(must have IPv4 format)\n");
+        return 1;
+    }
+    char* destiny = argv[1];
+
 	int socketScan;
 	int connectScan;
 
-	int port;
-	int start = 0;
-	int end = 65535;
-	char * destiny;
-	destiny = argv[1];
-
 	struct sockaddr_in target;
 
-	for(port=start; port<end; port++){
+	for(int port=0; port<65535; port++){
 
 		socketScan = socket(AF_INET, SOCK_STREAM, 0);
 		target.sin_family = AF_INET;
@@ -29,11 +32,22 @@ int main(int argc, char *argv[])
 		{
 			printf("open %d - status: [OPEN] \n", port);
 			close(socketScan);
-			close(connectScan);
 		}else{
 			close(socketScan);
-			close(connectScan);
 		}
  	}
 }
 
+int valid_ip(const char test[1])
+{
+    int a,b,c,d;
+    if(sscanf(&test[1], "%d.%d.%d.%d", &a,&b,&c,&d) == 4)
+    {
+        if(a < 0 || a > 255) return 1;
+        if(b < 0 || b > 255) return 1;
+        if(c < 0 || c > 255) return 1;
+        if(d < 0 || d > 255) return 1;
+        return 0;
+    }
+    return 1;
+}
